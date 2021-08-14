@@ -5,6 +5,7 @@ async function fetchWithErrorHandling(url = '') {
   try {
     const response = await fetch(url);
     const movies = await response.json();
+    console.log(movies);
     return movies.results;
   } catch (error) {
     console.log(error);

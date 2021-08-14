@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
 
-export function MovieDetailsPage() {
+export default function MovieDetailsPage() {
   const { movieId } = useParams();
   console.log(movieId);
   const [movie, setMovie] = useState(null);
@@ -10,5 +10,5 @@ export function MovieDetailsPage() {
     moviesAPI.fetchDetailsByMovie(movieId).then(setMovie);
   }, [movieId]);
 
-  return <>{movie && <h2>{movie.title}</h2>}</>;
+  return <>{movie && <h2>Hello</h2>}</>;
 }

@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
 
-export function HomePage() {
+export default function HomePage() {
   const [trendingMoviesList, setTrendingMovieList] = useState([]);
   const { url } = useRouteMatch();
+
   useEffect(() => {
     moviesAPI.fetchTrendingMovies().then(setTrendingMovieList);
   }, []);
