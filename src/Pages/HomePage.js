@@ -1,21 +1,38 @@
 import { useState, useEffect } from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
+import PageHeading from '../components/PageHeading/PageHeading';
 
 export default function HomePage() {
   const [trendingMoviesList, setTrendingMovieList] = useState([]);
-  const { url } = useRouteMatch();
 
   useEffect(() => {
     moviesAPI.fetchTrendingMovies().then(setTrendingMovieList);
   }, []);
 
   return (
-    trendingMoviesList &&
-    trendingMoviesList.map(movie => (
-      <li key={movie.id}>
-        <Link to={`${url}/${movie.id}`}>{movie.title}</Link>
-      </li>
-    ))
+    <>
+      <PageHeading text="Trending today" />
+
+      {trendingMoviesList && (
+        <ul>
+          {trendingMoviesList.map(
+            movie =>
+              movie.title && (
+                <li key={movie.id}>
+                  <Link
+                    to={{
+                      pathname: `movies/${movie.id}`,
+                      state: { params: `/` },
+                    }}
+                  >
+                    {movie.title}
+                  </Link>
+                </li>
+              ),
+          )}
+        </ul>
+      )}
+    </>
   );
 }
