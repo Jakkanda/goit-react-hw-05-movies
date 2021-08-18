@@ -8,6 +8,7 @@ import {
   Route,
 } from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
+import Loader from 'react-loader-spinner';
 import styled from './MovieDetailsPage.module.css';
 
 const Cast = lazy(() => import('./Cast' /* webpackChunkName: "cast" */));
@@ -77,7 +78,17 @@ export default function MovieDetailsPage() {
             </li>
           </ul>
           <hr />
-          <Suspense fallback={<h1>ЗАГРУЖАЕМ ДАННЫЕ...</h1>}>
+          <Suspense
+            fallback={
+              <Loader
+                type="Puff"
+                color="#00BFFF"
+                height={100}
+                width={100}
+                timeout={3000}
+              />
+            }
+          >
             <Route path={`${path}/cast`}>
               {casts && <Cast casts={casts} />}
             </Route>

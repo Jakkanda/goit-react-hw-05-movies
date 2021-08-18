@@ -1,7 +1,7 @@
 import { Navigation } from '../Navigation/Navigation';
 import styles from './AppBar.module.css';
 
-export function AppBar() {
+export default function AppBar() {
   return (
     <header className={styles.header}>
       <Navigation />
