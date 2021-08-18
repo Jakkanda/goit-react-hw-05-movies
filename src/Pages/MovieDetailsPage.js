@@ -8,6 +8,7 @@ import {
   Route,
 } from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
+import styled from './MovieDetailsPage.module.css';
 
 const Cast = lazy(() => import('./Cast' /* webpackChunkName: "cast" */));
 const Reviews = lazy(() =>
@@ -43,24 +44,28 @@ export default function MovieDetailsPage() {
   };
 
   return (
-    <>
-      <button type="button" onClick={onGoBack}>
+    <div className={styled.wrapper}>
+      <button type="button" className={styled.button} onClick={onGoBack}>
         ← Go back
       </button>
       {movie && (
-        <>
-          <img
-            src={`https://image.tmdb.org/t/p/w400/${movie.poster_path}`}
-            alt={movie.title}
-          />
-          <h2>
-            {movie.title} ({movie.release_date.substr(0, 4)})
-          </h2>
-          <p>User score: {Number(movie.vote_average * 10)} %</p>
-          <h3>Overview</h3>
-          <p>{movie.overview}</p>
-          <h3>Genres</h3>
-          <p>{movie.genres.map(genre => genre.name).join(' ')}</p>
+        <div className={styled.wrapper}>
+          <div className={styled.card}>
+            <img
+              src={`https://image.tmdb.org/t/p/w400/${movie.poster_path}`}
+              alt={movie.title}
+            />
+            <div className={styled.movie}>
+              <h2>
+                {movie.title} ({movie.release_date.substr(0, 4)})
+              </h2>
+              <p>User score: {Number(movie.vote_average * 10)} %</p>
+              <h3>Overview</h3>
+              <p>{movie.overview}</p>
+              <h3>Genres</h3>
+              <p>{movie.genres.map(genre => genre.name).join(' ')}</p>
+            </div>
+          </div>
           <hr />
           <p>Additional information</p>
           <ul>
@@ -81,8 +86,8 @@ export default function MovieDetailsPage() {
               {reviews && <Reviews reviews={reviews} />}
             </Route>
           </Suspense>
-        </>
+        </div>
       )}
-    </>
+    </div>
   );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
 import PageHeading from '../components/PageHeading/PageHeading';
+import styled from './HomePage.module.css';
 
 export default function HomePage() {
   const [trendingMoviesList, setTrendingMovieList] = useState([]);
@@ -11,11 +12,11 @@ export default function HomePage() {
   }, []);
 
   return (
-    <>
-      <PageHeading text="Trending today" />
+    <div className={styled.wrapper}>
+      <PageHeading title="Trending today" />
 
       {trendingMoviesList && (
-        <ul>
+        <ul className={styled.list}>
           {trendingMoviesList.map(
             movie =>
               movie.title && (
@@ -33,6 +34,6 @@ export default function HomePage() {
           )}
         </ul>
       )}
-    </>
+    </div>
   );
 }

@@ -1,3 +1,4 @@
+import styled from './PageHeading.module.css';
 export default function PageHeading({ title }) {
-  return <h1>{title}</h1>;
+  return <h1 className={styled.title}>{title}</h1>;
 }

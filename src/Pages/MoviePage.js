@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
+import styled from './MoviePage.module.css';
 
 export default function MoviePage() {
   const [query, setQuery] = useState('');
@@ -41,12 +42,15 @@ export default function MoviePage() {
     <>
       <form onSubmit={handleSubmit}>
         <input
+          className={styled.input}
           type="text"
           autoComplete="off"
           autoFocus
           placeholder="Search movies"
         />
-        <button type="submit">Search</button>
+        <button type="submit" className={styled.button}>
+          Search
+        </button>
       </form>
       {moviesList && (
         <ul>
