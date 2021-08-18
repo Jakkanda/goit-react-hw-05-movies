@@ -1,24 +1,52 @@
-import { useState, useEffect } from 'react';
-import { useParams, useRouteMatch, NavLink, Route } from 'react-router-dom';
+import { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import {
+  useParams,
+  useRouteMatch,
+  useLocation,
+  useHistory,
+  NavLink,
+  Route,
+} from 'react-router-dom';
 import * as moviesAPI from '../services/fetch-moviesAPI';
-import Cast from './Cast';
-import Reviews from './Reviews';
+
+const Cast = lazy(() => import('./Cast' /* webpackChunkName: "cast" */));
+const Reviews = lazy(() =>
+  import('./Reviews' /* webpackChunkName: "reviews" */),
+);
 
 export default function MovieDetailsPage() {
   const { movieId } = useParams();
-  const { url } = useRouteMatch();
+  const { url, path } = useRouteMatch();
+  const location = useLocation();
+  const history = useHistory();
+  const routerState = useRef(null);
 
   const [movie, setMovie] = useState(null);
   const [casts, setCasts] = useState(null);
   const [reviews, setReviews] = useState(null);
+
   useEffect(() => {
     moviesAPI.fetchDetailsByMovie(movieId).then(setMovie);
     moviesAPI.fetchCastMovie(movieId).then(setCasts);
     moviesAPI.fetchReviewsMovie(movieId).then(setReviews);
   }, [movieId]);
 
+  useEffect(() => {
+    if (!routerState.current) {
+      routerState.current = location.state;
+    }
+  }, [location.state]);
+
+  const onGoBack = () => {
+    const url = routerState.current ? `${routerState.current.params}` : '/';
+    history.push(url);
+  };
+
   return (
     <>
+      <button type="button" onClick={onGoBack}>
+        ← Go back
+      </button>
       {movie && (
         <>
           <img
@@ -44,12 +72,15 @@ export default function MovieDetailsPage() {
             </li>
           </ul>
           <hr />
-          <Route to="/movies/:movieId/cast">
-            {casts && <Cast casts={casts} />}
-          </Route>
-          <Route to="/movies/:movieId/reviews">
-            {reviews && <Reviews reviews={reviews} />}
-          </Route>
+          <Suspense fallback={<h1>ЗАГРУЖАЕМ ДАННЫЕ...</h1>}>
+            <Route path={`${path}/cast`}>
+              {casts && <Cast casts={casts} />}
+            </Route>
+
+            <Route path={`${path}/reviews`}>
+              {reviews && <Reviews reviews={reviews} />}
+            </Route>
+          </Suspense>
         </>
       )}
     </>
